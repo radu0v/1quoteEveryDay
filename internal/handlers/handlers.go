@@ -64,7 +64,7 @@ func (m *Repository) PostHome(w http.ResponseWriter, r *http.Request) {
 		m.SetHeader("To", models.Subscriber.Email)
 
 		m.SetHeader("Subject", "1 quote every day: Subscription")
-		content := fmt.Sprintf("Hey %s! You are now subscribed to 1qed.com. You are set to receive one quote every day!", models.Subscriber.Name)
+		content := fmt.Sprintf("Hey %s! You are now subscribed. You are set to receive one quote every day!", models.Subscriber.Name)
 		m.SetBody("text/plain", content)
 
 		d := gomail.NewDialer("smtp.gmail.com", 587, "", "")
