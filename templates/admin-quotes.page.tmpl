@@ -1,0 +1,71 @@
+{{template "admin" .}}
+
+{{define "content"}}
+    <div class="container">
+        <div class="buttons">
+            <div id="add-quote-btn">Add a quote</div>
+            <div id="del-quote-btn">Delete quote</div>
+        </div>
+
+        <div class="accordion" id="accordion">
+            <form action="" method="post">
+                <label class="label" for="add-quote">Quote</label>
+                <textarea name="add-quote" id="add-quote" cols="30" rows="4"></textarea>
+                <label class="label" for="add-author">Author</label>
+                <input type="text" name="add-author" id="add-author">
+                <button id="add-save">Save</button>
+            </form>
+        </div>
+
+        {{range $quote,$author := .Quotes}}
+        <div class="row">
+            <div class="quote">
+                "{{$quote}}"
+            </div>
+            <div class="author">
+                {{$author}}
+            </div>
+        </div>
+        {{end}}
+    </div>
+
+{{end}}
+
+{{define "js"}}
+<script>
+    let addQuoteBtn = document.getElementById("add-quote-btn");
+    let delQuoteBtn = document.getElementById("del-quote-btn");
+    let accordion = document.getElementById("accordion");
+    let addQuoteArea = document.getElementById("add-quote");
+    let addAuthorArea = document.getElementById("add-author");
+    let saveBtn = document.getElementById("add-save");
+    let label = document.getElementsByClassName("label");
+
+    let clicked = false;
+    addQuoteBtn.addEventListener("click",function(){
+        if (clicked === false) {
+            accordion.classList.toggle('active');
+            setTimeout(function(){
+                addQuoteArea.classList.toggle('active');
+                addAuthorArea.classList.toggle('active');
+                saveBtn.classList.toggle('active');
+                for (i=0;i<label.length;i++){
+                    label[i].classList.toggle('active');
+                }
+            },500)
+            clicked = true;
+        }else{
+            addQuoteArea.classList.toggle('active');
+            addAuthorArea.classList.toggle('active');
+            saveBtn.classList.toggle('active');
+            for (i=0;i<label.length;i++){
+                label[i].classList.toggle('active');
+            }
+            setTimeout(function(){
+                accordion.classList.toggle('active'); 
+            },100)
+            clicked=false
+        }
+    })
+</script>
+{{end}}

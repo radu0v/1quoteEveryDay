@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@700&display=swap');
+
+body {
+    font-family: 'Quicksand', sans-serif;
+    height: 100vh;
+    margin: 0;
+    background-color: rgb(229, 227, 227);
+}
+
+.header{
+    height: 10vh;
+    background-color: white;
+    margin: 0;
+    z-index: 1;
+    box-shadow: 0px 5px greenyellow;
+}
+
+.header .menu{
+    font-size: 2rem;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+
+.header .menu .menu-item{
+    height: 10vh;
+    width: 15vw;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.header .menu .menu-item:hover{
+    background-color: greenyellow;
+    text-align: center;
+    cursor: pointer;    
+}
+
+.container {
+    display: block;
+    width: 85vw;
+    height: 85vh;
+    margin: 0 auto;
+    margin-top: 15px;
+}
+
+.container .cards{
+    height: 50%;
+    font-size: 2rem;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.container .cards .card{
+    display: flex;
+    width: 40%;
+    height: 40%;
+    background-color: white;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1;
+    box-shadow: 0px 5px 0px red;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:visited{
+    text-decoration: none;
+    color: black;
+}
+
+.row {
+    display: flex;
+    height: 40px;
+    width: 100%;
+    padding: 20px; 
+    background-color: white;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    box-shadow: 0px 5px 0px purple;
+    z-index: 1;
+}
+
+.quote{
+    width: 75%;
+    font-size: 1rem;
+    font-style: italic;
+}
+
+.author{
+    width: 25%;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+.buttons{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
+#add-quote-btn{
+    width: 40%;
+    background-color: greenyellow;
+    text-align: center;
+    padding: 15px;
+    cursor: pointer;
+}
+
+#add-quote-btn:hover{
+    background-color: rgb(109, 179, 4);
+}
+
+#del-quote-btn{
+    width: 40%;
+    background-color: red;
+    text-align: center;
+    padding: 15px;
+    cursor:pointer;
+}
+
+#del-quote-btn:hover{
+    background-color: rgb(244, 86, 86);
+}
+
+.accordion{
+    width: 100%;
+    background-color: white;
+    display: block;
+    margin-bottom: 15px;
+    transition: 1s;
+    height: 0px;
+}
+
+.accordion.active{
+    height: 150px;
+    padding: 20px;
+    transition: 0.5s;
+}
+
+#add-quote{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    visibility: hidden;
+}
+
+#add-quote.active{
+   visibility: visible;
+}
+
+#add-author{
+    width: 25%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 5px;
+    visibility: hidden;
+}
+
+#add-author.active{
+    visibility: visible;
+}
+
+#add-save{
+    width: 10%;
+    background-color: greenyellow;
+    border: none;
+    padding: 7px;
+    margin-left: 10px;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+#add-save.active {
+    visibility: visible;
+}
+
+.label {
+    visibility: hidden;
+}
+
+.label.active{
+    visibility: visible;
+}

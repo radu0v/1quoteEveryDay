@@ -1,0 +1,7 @@
+create_table("subscribers"){
+    t.Column("id","integer",{"primary":true})
+    t.Column("email","string",{})
+    t.Column("name","string",{})
+    t.Column("date","date",{})
+    t.DisableTimestamps()
+}

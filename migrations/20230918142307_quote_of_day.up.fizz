@@ -1,0 +1,6 @@
+create_table("quote_of_day"){
+    t.Column("id_quote","integer",{})
+    t.ForeignKey("id_quote",{"quotes":["id"]},{"on delete":"cascade"})
+    t.Column("date","string",{})
+    t.DisableTimestamps()
+}

@@ -1,0 +1,1 @@
+drop_table("quote_of_day")

@@ -1,0 +1,33 @@
+{{template "base" .}}
+
+{{define "content"}}
+
+<div class="title">
+    <h1>1 quote every day</h1>
+</div>
+
+<div class="subscribe">
+    <p>Subscribe and receive a quote every day in your inbox</p>
+    <form method="post">
+        <div class="info">
+            <div class="e-mail">
+                <label for="email">e-mail</label>
+                <input type="email" name="email" id="email" required>
+            </div>
+            <div class="name">
+                <label for="name">your name</label>
+                <input type="text" name="name" id="name" required>
+            </div>
+        </div>
+        <div class="submit-btn">
+            <input type="submit" value="subscribe" id="submit-btn">
+        </div>
+    </form>
+</div>
+
+<div class="quotes">
+    <div class="quote">"{{index .Quote}}"</div>
+    <div class="author">{{index .Author}}</div>
+</div>
+
+{{end}}

@@ -1,0 +1,11 @@
+{{template "base" .}}
+
+{{define "content"}}
+<div class="thank-you">
+    {{if .IsSubscribed}}
+    <h1>You are already subscribed. Your email is already present in the database.</h1>
+    {{else}}
+    <h1>Thank you for subscribing. You will receive a quote every day to your email address.</h1>
+    {{end}}
+</div>
+{{end}}

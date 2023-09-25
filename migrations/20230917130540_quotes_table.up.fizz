@@ -1,0 +1,7 @@
+create_table("quotes"){
+    t.Column("id","integer",{"primary":true})
+    t.Column("quote","text",{})
+    t.Column("author","string",{})
+    t.DisableTimestamps()
+}
+
