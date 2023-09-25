@@ -14,7 +14,7 @@ func sendNewsLetter() {
 	if err != nil {
 		log.Println("Error setting daily quote:", err)
 	}
-	d := gomail.NewDialer("smtp.gmail.com", 587, "aradu96.v@gmail.com", "dnpx pedw zfnr syuf")
+	d := gomail.NewDialer("smtp.gmail.com", 587, "", "")
 	s, err := d.Dial()
 	if err != nil {
 		panic(err)
@@ -27,7 +27,7 @@ func sendNewsLetter() {
 	}
 
 	for _, sub := range subs {
-		m.SetHeader("From", "aradu96.v@gmail.com")
+		m.SetHeader("From", "")
 		m.SetAddressHeader("To", sub.Email, sub.Name)
 		m.SetHeader("Subject", "Daily quote from 1 quote every day")
 		m.SetBody("text/plain", fmt.Sprintf("%s\n%s", models.DQ.Quote, models.DQ.Author))
