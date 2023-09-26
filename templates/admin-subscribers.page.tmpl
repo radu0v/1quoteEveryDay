@@ -5,17 +5,17 @@
         <table class="table">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">QUOTE</th>
-                    <th scope="col">AUTHOR</th>
+                    <th scope="col">#</th>
+                    <th scope="col">EMAIL</th>
+                    <th scope="col">NAME</th>
                 </tr>
             </thead>
             <tbody>
-                {{range $quote := .Quotes}}
+                {{range $index, $subscriber := .Subscribers}}
                 <tr class="table-group-divider">
-                    <th scope="row">{{$quote.ID}}</th>
-                    <th>{{$quote.Quote}}</th>
-                    <th>{{$quote.Author}}</th>
+                    <th scope="row">{{inc $index}}</th>
+                    <th>{{$subscriber.Email}}</th>
+                    <th>{{$subscriber.Name}}</th>
                 </tr>
                 {{end}}
             </tbody>

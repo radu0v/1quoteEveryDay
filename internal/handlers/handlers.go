@@ -107,5 +107,12 @@ func (m *Repository) AdminQuotes(w http.ResponseWriter, r *http.Request) {
 
 // handler for admin page /subscribers
 func (m *Repository) Subscribers(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "admin.page.tmpl", &models.Data{})
+	subs, err := m.DB.GetSubscribers()
+	if err != nil {
+		fmt.Println("error getting subscribers: ", err)
+	}
+
+	render.RenderTemplate(w, r, "admin-subscribers.page.tmpl", &models.Data{
+		Subscribers: subs,
+	})
 }

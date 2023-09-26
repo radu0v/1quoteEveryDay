@@ -5,6 +5,7 @@ type Data struct {
 	Quote        string
 	Author       string
 	IsSubscribed bool
+	Subscribers  []EmailData
 }
 
 type Quote struct {
