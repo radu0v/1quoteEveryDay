@@ -11,6 +11,7 @@ import (
 func routes() http.Handler {
 	mux := chi.NewRouter()
 	mux.Use(middleware.Recoverer)
+	mux.Use(NoSurf)
 	mux.Get("/", handlers.Repo.Home)
 	mux.Post("/", handlers.Repo.PostHome)
 

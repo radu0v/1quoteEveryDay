@@ -5,6 +5,7 @@ body {
     background-color: ivory;
     width: 100%;
     height: 100vh;
+    min-height: 100vh;
 }
 
 .title {
@@ -40,26 +41,28 @@ body {
 
 
 .quotes {
+    padding-top: 30px ;
     text-align: center;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    width: 70%;
+    width: 80%;
+    margin: 0 auto;
 }
 
 .quote{
-    font-size: 3rem;
+    font-size: 2rem;
     font-family: 'Mooli', sans-serif;
     line-height: 1.5;
 }
 
 .author{
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-family: 'Kanit', sans-serif;
 }
 
-/* thank you page */
+footer {
+    margin-top: auto;
+}
+
+/* thank-you page */
  .thank-you{
     font-family: 'Quicksand', sans-serif;
     text-align:center;

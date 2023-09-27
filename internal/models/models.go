@@ -6,6 +6,7 @@ type Data struct {
 	Author       string
 	IsSubscribed bool
 	Subscribers  []EmailData
+	CSRFToken    string
 }
 
 type Quote struct {

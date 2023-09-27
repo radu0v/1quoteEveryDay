@@ -9,6 +9,7 @@
 <div class="subscribe">
     <p>Subscribe and receive a quote every day in your inbox</p>
     <form method="post">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{.CSRFToken}}">
         <div class="info">
             <div class="e-mail">
                 <label for="email">e-mail</label>

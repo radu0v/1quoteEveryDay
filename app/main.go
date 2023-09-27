@@ -19,7 +19,7 @@ func main() {
 	var dbHost = "localhost"
 	//fmt.Scan(&dbHost)
 	//fmt.Println("Database port:")
-	var dbPort = "5432"
+	var dbPort = ""
 	//fmt.Scan(&dbPort)
 	//fmt.Println("Database name:")
 	var dbName = ""
