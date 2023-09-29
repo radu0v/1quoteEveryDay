@@ -1,0 +1,18 @@
+{{template "base" .}}
+
+{{define "content"}}
+<div class="title">
+    <h1>Unsubscribe</h1>
+</div>
+<div class="unsubscribe">
+    <form action="" method="post">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{.CSRFToken}}">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email">
+        <button type="submit">Unsubscribe</button>
+        {{if .Bool}}
+        <p>You are not subscribed anymore.</p>
+        <p>You will also receive an email confirming you have unsuscribed.</p>
+        {{end}}
+    </form>
+{{end}}

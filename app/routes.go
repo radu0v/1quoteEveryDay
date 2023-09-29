@@ -14,6 +14,11 @@ func routes() http.Handler {
 	mux.Use(NoSurf)
 	mux.Get("/", handlers.Repo.Home)
 	mux.Post("/", handlers.Repo.PostHome)
+	mux.Get("/unsubscribe", handlers.Repo.Unsubscribe)
+	mux.Post("/unsubscribe", handlers.Repo.UnsubscribePost)
+	mux.Get("/feedback", handlers.Repo.Feedback)
+	mux.Post("/feedback", handlers.Repo.FeedbackPost)
+	mux.Get("/privacy-policy", handlers.Repo.PrivacyPolicy)
 
 	mux.Route("/admin", func(r chi.Router) {
 		//mux.Use(Auth)

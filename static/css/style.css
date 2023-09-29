@@ -13,6 +13,11 @@ body {
     font-family: 'Quicksand', sans-serif;
 }
 
+.title a{
+    text-decoration: none;
+    color: black;
+}
+
 .subscribe {
     text-align: center;
     font-family: 'Quicksand', sans-serif;
@@ -58,12 +63,63 @@ body {
     font-family: 'Kanit', sans-serif;
 }
 
-footer {
-    margin-top: auto;
+.footer {
+    position: fixed;
+    left:0;
+    bottom: 0;
+    width: 100%;
+    background-color: rgb(217, 217, 194);
+    color: black;
+    text-align: center;
+    height: 4vh;
+    padding:5px
 }
 
-/* thank-you page */
- .thank-you{
+.footer-content{
+    display: flex;
+    justify-content: center;
+}
+
+.footer-content a {
+    margin-right: 15px;
+}
+
+.feedback {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.feedback input{
+    display: block;
+    margin: 0 auto;
+    width: 200px;
+    margin-bottom: 5px;
+}
+
+.feedback textarea {
+    display: block;
+    margin: 0 auto;
+    width: 350px;
+    margin-bottom: 20px;
+}
+
+.unsubscribe form {
+    display: block;
+    margin: 0 auto;
+    width: 250px;
+    text-align: center;
+}
+
+.unsubscribe input{
+    margin-bottom: 10px;
+    width: 250px;
+}
+
+
+
+/* post-subscription page */
+ .post-subscription{
     font-family: 'Quicksand', sans-serif;
     text-align:center;
     margin: 0 auto;

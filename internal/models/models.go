@@ -7,6 +7,9 @@ type Data struct {
 	IsSubscribed bool
 	Subscribers  []EmailData
 	CSRFToken    string
+	Bool         bool
+	IntMap       map[string]int
+	StringMap    map[string]string
 }
 
 type Quote struct {

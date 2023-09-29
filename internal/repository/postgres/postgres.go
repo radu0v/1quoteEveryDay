@@ -293,3 +293,15 @@ func (m *postgresDB) GetSubscribers() ([]models.EmailData, error) {
 	}
 	return subs, nil
 }
+
+func (m *postgresDB) Unsubscribe(email string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `delete from subscribers * where email=$1`
+	_, err := m.DB.ExecContext(ctx, query, email)
+	if err != nil {
+		return err
+	}
+	return nil
+}

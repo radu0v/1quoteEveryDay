@@ -1,6 +1,53 @@
 {{template "admin" .}}
 
+{{define "css"}}
+<style>
+    .row{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    .card{
+        width: 18rem;
+        min-height: 18rem;
+        height: fit-content;
+        background-color: rgb(12, 12, 12);
+        color: white;
+        align-items: center;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+</style>
+{{end}}
+
 {{define "content"}}
-    <div class="container" style="padding-top: 70px;"></div>
+    <div class="container" style="padding-top: 70px;">
+        <div class="row">
+            <div class="card">
+                <div class="card-title" style="font-size: 3rem;">
+                    <p>Quotes</p>
+                    <p style="font-size: 4rem;">{{index .IntMap "nrQuotes"}}</p>
+                </div>
+                <div class="card-body" >
+                    <p>{{index .Quote}}</p>
+                    <p>{{index .Author}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="card">
+                <div class="card-title" style="font-size: 3rem;">
+                    <p>Subscribers</p>
+                    <p style="font-size: 4rem;">{{index .IntMap "nrSubs"}}</p>
+                </div>
+                <div class="card-body">
+                    {{index .StringMap "email"}}
+                </div>
+            </div>  
+        </div>
+        
+    </div>
     
 {{end}}

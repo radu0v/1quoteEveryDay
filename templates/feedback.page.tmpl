@@ -1,0 +1,19 @@
+{{template "base" .}}
+
+{{define "content"}}
+<div class="title">
+    <h1>Send your feedback and suggestions</h1>
+</div>
+<div class="feedback">
+    <form action="" method="post">
+        <input type="hidden" name="csrf_token" id="csrf_token" value="{{.CSRFToken}}">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+        <label for="message">Write here your feedback and suggestions!</label>
+        <textarea name="message" id="message" cols="30" rows="10"></textarea>
+        <button type="submit">Send</button>
+    </form>
+</div>
+{{end}}

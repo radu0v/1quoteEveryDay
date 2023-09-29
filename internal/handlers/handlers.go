@@ -59,25 +59,89 @@ func (m *Repository) PostHome(w http.ResponseWriter, r *http.Request) {
 			log.Println("error adding subscriber to db table: ", err)
 		}
 		//send greeting email
-		m := gomail.NewMessage()
-		m.SetHeader("From", "")
-		m.SetHeader("To", models.Subscriber.Email)
+		msg := gomail.NewMessage()
+		msg.SetHeader("From", "")
+		msg.SetHeader("To", models.Subscriber.Email)
 
-		m.SetHeader("Subject", "1 quote every day: Subscription")
+		msg.SetHeader("Subject", "1 quote every day: Subscription")
 		content := fmt.Sprintf("Hey %s! You are now subscribed. You are set to receive one quote every day!", models.Subscriber.Name)
-		m.SetBody("text/plain", content)
+		msg.SetBody("text/plain", content)
 
 		d := gomail.NewDialer("smtp.gmail.com", 587, "", "")
 
-		// Send the email to Bob, Cora and Dan.
-		if err := d.DialAndSend(m); err != nil {
+		// Send the email
+		if err := d.DialAndSend(msg); err != nil {
 			panic(err)
 		}
 
 	}
-	render.RenderTemplate(w, r, "thank-you.page.tmpl", &models.Data{
+	render.RenderTemplate(w, r, "post-subscription.page.tmpl", &models.Data{
 		IsSubscribed: isSubscribed,
 	})
+}
+
+func (m *Repository) Unsubscribe(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, r, "unsubscribe.page.tmpl", &models.Data{})
+}
+
+func (m *Repository) UnsubscribePost(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	//if email is not present in database
+	// write to the web page that the user will be unsubscribed and
+	// they will receive an email confirming they are no longer subscribed
+	unsubscribed := false
+	isSubscribed, err := m.DB.IsSubscribed(email)
+	if err != nil {
+		log.Println("error checking if user is subscribed: ", err)
+	}
+
+	if isSubscribed {
+		err := m.DB.Unsubscribe(email)
+		if err != nil {
+			log.Println("Error unsubscribing user: ", err)
+		}
+		unsubscribed = true
+		//send email to confirm that user is no longer subscribed
+		render.RenderTemplate(w, r, "unsubscribe.page.tmpl", &models.Data{
+			Bool: unsubscribed,
+		})
+	} else {
+		render.RenderTemplate(w, r, "unsubscribe.page.tmpl", &models.Data{
+			Bool: unsubscribed,
+		})
+	}
+
+}
+
+func (m *Repository) Feedback(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, r, "feedback.page.tmpl", &models.Data{})
+}
+
+func (m *Repository) FeedbackPost(w http.ResponseWriter, r *http.Request) {
+	email := r.FormValue("email")
+	name := r.FormValue("name")
+	messagge := r.FormValue("message")
+
+	//send mail with the feedback
+	msg := gomail.NewMessage()
+	msg.SetHeader("To", "")
+	msg.SetHeader("From", "")
+	msg.SetHeader("Subject", fmt.Sprintf("Feedback from %s (%s)", name, email))
+	msg.SetBody("text/plain", messagge)
+
+	d := gomail.NewDialer("smtp.gmail.com", 587, "", "")
+
+	// send mail
+	if err := d.DialAndSend(msg); err != nil {
+		panic(err)
+	}
+
+	render.RenderTemplate(w, r, "feedback.page.tmpl", &models.Data{})
+
+}
+
+func (m *Repository) PrivacyPolicy(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, r, "privacy-policy.page.tmpl", &models.Data{})
 }
 
 // admin pages handlers
@@ -88,9 +152,31 @@ func (m *Repository) Admin(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Println(err)
 	}
+
+	quotes, err := m.DB.GetQuotes()
+	if err != nil {
+		log.Println("error getting quotes:", err)
+	}
+	nrQuotes := len(quotes)
+
+	subs, err := m.DB.GetSubscribers()
+	if err != nil {
+		log.Println("error getting subscribers: ", err)
+	}
+	nrSub := len(subs)
+	lastSub := subs[len(subs)-1]
+	intMap := map[string]int{
+		"nrQuotes": nrQuotes,
+		"nrSubs":   nrSub,
+	}
+	stringMap := map[string]string{
+		"email": lastSub.Email,
+	}
 	render.RenderTemplate(w, r, "admin.page.tmpl", &models.Data{
-		Quote:  models.DQ.Quote,
-		Author: models.DQ.Author,
+		Quote:     models.DQ.Quote,
+		Author:    models.DQ.Author,
+		IntMap:    intMap,
+		StringMap: stringMap,
 	})
 }
 

@@ -8,14 +8,22 @@
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+    <div class="title" id="title">
+        <h1><a href="/">1 quote every day</a></h1>
+    </div>
+    
     {{block "content" .}}
 
     {{end}}
 
-   
-    
+    <div class="footer">
+        <div class="footer-content">
+            <a href="/unsubscribe">Unsubscribe</a>
+            <a href="/feedback">Feedback</a>
+            <a href="/privacy-policy">Privacy Policy</a>
+        </div>
+    </div>
     {{block "js" .}}
-
     {{end}}
 </body>
 </html>

@@ -9,4 +9,5 @@ type DataBaseRepo interface {
 	IsSubscribed(emailAddr string) (bool, error)
 	AddSubscriber(email string, name string) error
 	GetSubscribers() ([]models.EmailData, error)
+	Unsubscribe(email string) error
 }
