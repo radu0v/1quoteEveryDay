@@ -146,6 +146,25 @@ func (m *Repository) PrivacyPolicy(w http.ResponseWriter, r *http.Request) {
 
 // admin pages handlers
 
+// login page handler
+func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, r, "login.page.tmpl", &models.Data{})
+}
+
+// post login page handler
+func (m *Repository) PostLogin(w http.ResponseWriter, r *http.Request) {
+	//check user and password
+	user := r.FormValue("username")
+	pass := r.FormValue("password")
+
+	err := m.DB.Authenticate(user, pass)
+	if err != nil {
+		log.Println("error authenticating user:", err)
+
+	}
+
+}
+
 // dashboard for admin page
 func (m *Repository) Admin(w http.ResponseWriter, r *http.Request) {
 	err := m.DB.SetDailyQuote()

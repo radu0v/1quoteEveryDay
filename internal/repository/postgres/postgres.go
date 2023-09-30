@@ -3,11 +3,13 @@ package postgres
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 	"math/rand"
 	"time"
 
+	"github.com/alexedwards/argon2id"
 	"github.com/radu0v/1quoteEveryDay/internal/models"
 	"github.com/radu0v/1quoteEveryDay/internal/repository"
 )
@@ -304,4 +306,32 @@ func (m *postgresDB) Unsubscribe(email string) error {
 		return err
 	}
 	return nil
+}
+
+func (m *postgresDB) Authenticate(user string, pass string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	// check if the user exists in the db table
+	var username, password string
+	row := m.DB.QueryRowContext(ctx, "select user,password from users where id=1")
+	err := row.Scan(&username, &password)
+	if err != nil {
+		return err
+	}
+	if err = row.Err(); err != nil {
+		return err
+	}
+	if username == user {
+		match, err := argon2id.ComparePasswordAndHash(pass, password)
+		if err != nil {
+			return err
+		}
+		if !match {
+			return errors.New("invalid credentials")
+		}
+		return nil
+	} else {
+		return errors.New("invalid credentials")
+	}
 }

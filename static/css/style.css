@@ -116,6 +116,20 @@ body {
     width: 250px;
 }
 
+.login-form{
+    display: block;
+    margin:0 auto;
+    width: 250px;
+    text-align: center;
+}
+
+.login-form label {
+    margin-bottom: 5px;
+}
+.login-form input {
+    width: 250px;
+    margin-bottom: 20px;
+}
 
 
 /* post-subscription page */

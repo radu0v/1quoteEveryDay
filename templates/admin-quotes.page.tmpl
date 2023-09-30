@@ -1,8 +1,18 @@
 {{template "admin" .}}
 
+{{define "css"}}
+<style>
+    
+</style>
+{{end}}
+
 {{define "content"}}
-       
-        <table class="table">
+        <button type="button" class="btn btn-success" id="add">Add quote</button>
+        <button type="button" class="btn btn-danger" id="del">Delete quote</button>
+        <div class="custom-accordion" id="accordion">
+            
+        </div>
+        <table class="table" style="margin-top: 20px;">
             <thead class="table-dark">
                 <tr>
                     <th scope="col">ID</th>
@@ -21,7 +31,15 @@
             </tbody>
             
         </table>
-        
-    
+{{end}}
 
+{{define "js"}}
+<script>
+    let add_btn = document.getElementById('add');
+    let accordion = document.getElementById('accordion');
+    add_btn.addEventListener('click',function(){
+       
+    });
+
+</script>
 {{end}}

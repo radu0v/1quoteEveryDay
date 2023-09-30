@@ -4,8 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1 Quote Every Day Login</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
+
+    <div class="title">
+        <h1>Admin Login</h1>
+    </div>
+    <div class="login-form">
+        <form method="post">
+            <input type="hidden" name="csrfToken" id="csrfToken" value="{{.CSRFToken}}">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+            <button type="submit">Login</button>
+        </form>
+    </div>
     
 </body>
 </html>

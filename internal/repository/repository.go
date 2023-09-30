@@ -10,4 +10,5 @@ type DataBaseRepo interface {
 	AddSubscriber(email string, name string) error
 	GetSubscribers() ([]models.EmailData, error)
 	Unsubscribe(email string) error
+	Authenticate(user string, pass string) error
 }

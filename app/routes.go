@@ -22,6 +22,7 @@ func routes() http.Handler {
 
 	mux.Route("/admin", func(r chi.Router) {
 		//mux.Use(Auth)
+		mux.Get("/login", handlers.Repo.Login)
 		mux.Get("/dashboard", handlers.Repo.Admin)
 		mux.Get("/quotes", handlers.Repo.AdminQuotes)
 		mux.Get("/subscribers", handlers.Repo.Subscribers)
