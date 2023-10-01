@@ -10,7 +10,13 @@
         <button type="button" class="btn btn-success" id="add">Add quote</button>
         <button type="button" class="btn btn-danger" id="del">Delete quote</button>
         <div class="custom-accordion" id="accordion">
-            
+            <div class="card">
+                <form method="post">
+                    <textarea name="quote" id="quote" cols="30" rows="10"></textarea>
+                    <input type="text" name="author" id="author" placeholder="author">
+                    <button type="submit">Add</button>
+                </form>
+            </div>
         </div>
         <table class="table" style="margin-top: 20px;">
             <thead class="table-dark">
