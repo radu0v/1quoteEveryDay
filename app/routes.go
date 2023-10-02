@@ -20,17 +20,22 @@ func routes() http.Handler {
 	mux.Post("/feedback", handlers.Repo.FeedbackPost)
 	mux.Get("/privacy-policy", handlers.Repo.PrivacyPolicy)
 
-	mux.Route("/admin", func(r chi.Router) {
-		//mux.Use(Auth)
-		mux.Get("/login", handlers.Repo.Login)
-		mux.Get("/dashboard", handlers.Repo.Admin)
-		mux.Get("/quotes", handlers.Repo.AdminQuotes)
-		mux.Get("/subscribers", handlers.Repo.Subscribers)
-	})
-
+	mux.Mount("/admin", adminRouter())
 	//enabling static files
 	fileserver := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileserver))
 
 	return mux
+}
+
+func adminRouter() http.Handler {
+	r := chi.NewRouter()
+	r.Use(NoSurf)
+	r.Use(middleware.Recoverer)
+	r.Get("/", handlers.Repo.Admin)
+	r.Get("/quotes", handlers.Repo.AdminQuotes)
+	r.Get("/subscribers", handlers.Repo.Subscribers)
+	r.Get("/quotes/add", handlers.Repo.AdminAddQuote)
+	r.Post("/quotes/add", handlers.Repo.AdminAddQuotePost)
+	return r
 }

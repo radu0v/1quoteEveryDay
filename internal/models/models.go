@@ -10,6 +10,8 @@ type Data struct {
 	Bool         bool
 	IntMap       map[string]int
 	StringMap    map[string]string
+	Error        error
+	IsError      bool
 }
 
 type Quote struct {

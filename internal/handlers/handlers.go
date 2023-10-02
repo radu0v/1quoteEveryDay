@@ -210,6 +210,23 @@ func (m *Repository) AdminQuotes(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
+func (m *Repository) AdminAddQuote(w http.ResponseWriter, r *http.Request) {
+	render.RenderTemplate(w, r, "admin-quote-add.page.tmpl", &models.Data{})
+}
+
+func (m *Repository) AdminAddQuotePost(w http.ResponseWriter, r *http.Request) {
+	quote := r.FormValue("quote")
+	author := r.FormValue("author")
+	fmt.Println(quote)
+	err := m.DB.AddQuote(quote, author)
+	if err != nil {
+		log.Println("error adding quote:", err)
+	}
+
+	render.RenderTemplate(w, r, "admin-quote-add.page.tmpl", &models.Data{})
+
+}
+
 // handler for admin page /subscribers
 func (m *Repository) Subscribers(w http.ResponseWriter, r *http.Request) {
 	subs, err := m.DB.GetSubscribers()

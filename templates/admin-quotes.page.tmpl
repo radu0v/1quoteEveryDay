@@ -1,23 +1,46 @@
 {{template "admin" .}}
 
 {{define "css"}}
-<style>
+ <style>
+    button a {
+        text-decoration: none;
+        color: white;
+    }
+
     
-</style>
+ </style>
 {{end}}
 
 {{define "content"}}
-        <button type="button" class="btn btn-success" id="add">Add quote</button>
+        <button type="button" class="btn btn-success" id="add"><a href="/admin/quotes/add">Add quote</a></button>
         <button type="button" class="btn btn-danger" id="del">Delete quote</button>
-        <div class="custom-accordion" id="accordion">
-            <div class="card">
-                <form method="post">
-                    <textarea name="quote" id="quote" cols="30" rows="10"></textarea>
-                    <input type="text" name="author" id="author" placeholder="author">
-                    <button type="submit">Add</button>
-                </form>
+
+        <!-- modal -->
+        <div class="modal" tabindex="-1" id="modal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Delete quote</h5>
+                  <button id="x-btn" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <p>Insert the quote ID</p>
+                  <form action="" method="post">
+                    <input type="hidden" name="csfr_token" value="{{.CSRFToken}}">
+                    <input type="number" name="quoteID" id="quoteID">
+                    <div class="modal-footer">
+                        <button id="close-btn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                      </div>
+                  </form>
+                </div>
+                
+              </div>
             </div>
-        </div>
+          </div>
+
+
+        <!---->
         <table class="table" style="margin-top: 20px;">
             <thead class="table-dark">
                 <tr>
@@ -41,11 +64,24 @@
 
 {{define "js"}}
 <script>
-    let add_btn = document.getElementById('add');
-    let accordion = document.getElementById('accordion');
-    add_btn.addEventListener('click',function(){
-       
-    });
+    let del_btn = document.getElementById('del');
+    let modal = document.getElementById('modal');
+    let xbtn = document.getElementById('x-btn');
+    let close_btn = document.getElementById('close-btn');
+    del_btn.addEventListener('click',function(){
+        modal.style.display = "block";
+    })
+    xbtn.addEventListener('click',function(){
+        modal.style.display = "none";
+    })
+    close_btn.addEventListener('click',function(){
+        modal.style.display = "none";
+    })
 
+    window.addEventListener('click',function(e){
+        if (e.target === modal){
+            modal.style.display = "none";
+        }
+    })
 </script>
 {{end}}

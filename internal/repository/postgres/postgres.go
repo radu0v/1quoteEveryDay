@@ -28,8 +28,8 @@ func (m *postgresDB) AddQuote(quote string, author string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := `insert into quotes (quote,author) values ($1,$2)`
-	_, err := m.DB.ExecContext(ctx, query, quote, author, time.Now())
+	query := `insert into quotes(quote,author) values($1,$2)`
+	_, err := m.DB.ExecContext(ctx, query, quote, author)
 	if err != nil {
 		log.Println("Error adding quote to database:", err)
 		return err
