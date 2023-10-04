@@ -38,10 +38,10 @@ func main() {
 	var dbPort = "5432"
 	//fmt.Scan(&dbPort)
 	//fmt.Println("Database name:")
-	var dbName = "1quote"
+	var dbName = ""
 	//fmt.Scan(&dbName)
 	//fmt.Println("Database user:")
-	var dbUser = "radu"
+	var dbUser = ""
 	//fmt.Scan(&dbUser)
 	//fmt.Println("Database password:")
 	var dbPassword = ""
