@@ -7,3 +7,5 @@ Dependencies:
 - gomail : https://github.com/go-gomail/gomail
 - cron : https://github.com/robfig/cron
 - soda (pop) : https://github.com/gobuffalo/buffalo https://gobuffalo.io/documentation/database/soda/
+- scs  (http session management for go) : https://github.com/alexedwards/scs
+- argon2id : https://github.com/alexedwards/argon2id
