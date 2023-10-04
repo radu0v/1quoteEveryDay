@@ -1,5 +1,7 @@
 github.com/alexedwards/argon2id v0.0.0-20230305115115-4b3c3280a736 h1:qZaEtLxnqY5mJ0fVKbk31NVhlgi0yrKm51Pq/I5wcz4=
 github.com/alexedwards/argon2id v0.0.0-20230305115115-4b3c3280a736/go.mod h1:mTeFRcTdnpzOlRjMoFYC/80HwVUreupyAiqPkCZQOXc=
+github.com/alexedwards/scs/v2 v2.5.1 h1:EhAz3Kb3OSQzD8T+Ub23fKsiuvE0GzbF5Lgn0uTwM3Y=
+github.com/alexedwards/scs/v2 v2.5.1/go.mod h1:ToaROZxyKukJKT/xLcVQAChi5k6+Pn1Gvmdl7h3RRj8=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=

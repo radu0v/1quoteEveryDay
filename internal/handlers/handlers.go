@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/radu0v/1quoteEveryDay/internal/config"
 	"github.com/radu0v/1quoteEveryDay/internal/driver"
 	"github.com/radu0v/1quoteEveryDay/internal/models"
 	"github.com/radu0v/1quoteEveryDay/internal/render"
@@ -15,12 +16,14 @@ import (
 
 // repository for the database functions
 type Repository struct {
-	DB repository.DataBaseRepo
+	DB  repository.DataBaseRepo
+	App *config.AppConfig
 }
 
-func NewRepo(dbConn *driver.DB) *Repository {
+func NewRepo(dbConn *driver.DB, app *config.AppConfig) *Repository {
 	return &Repository{
-		DB: postgres.NewPostgresDB(dbConn.SQL),
+		DB:  postgres.NewPostgresDB(dbConn.SQL),
+		App: app,
 	}
 }
 
@@ -153,6 +156,8 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 
 // post login page handler
 func (m *Repository) PostLogin(w http.ResponseWriter, r *http.Request) {
+	_ = m.App.Session.RenewToken(r.Context())
+
 	//check user and password
 	user := r.FormValue("username")
 	pass := r.FormValue("password")
@@ -160,81 +165,113 @@ func (m *Repository) PostLogin(w http.ResponseWriter, r *http.Request) {
 	err := m.DB.Authenticate(user, pass)
 	if err != nil {
 		log.Println("error authenticating user:", err)
-
+		m.App.Session.Put(r.Context(), "error", "invalid login credentials")
+		http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
+		return
 	}
-
+	m.App.Session.Put(r.Context(), "user_id", 1)
+	http.Redirect(w, r, "/admin", http.StatusSeeOther)
 }
 
 // dashboard for admin page
 func (m *Repository) Admin(w http.ResponseWriter, r *http.Request) {
-	err := m.DB.SetDailyQuote()
-	if err != nil {
-		log.Println(err)
-	}
+	ok := m.App.Session.Exists(r.Context(), "user_id")
+	if !ok {
+		m.App.Session.Put(r.Context(), "error", "log in first")
+		http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
+	} else {
+		err := m.DB.SetDailyQuote()
+		if err != nil {
+			log.Println(err)
+		}
 
-	quotes, err := m.DB.GetQuotes()
-	if err != nil {
-		log.Println("error getting quotes:", err)
-	}
-	nrQuotes := len(quotes)
+		quotes, err := m.DB.GetQuotes()
+		if err != nil {
+			log.Println("error getting quotes:", err)
+		}
+		nrQuotes := len(quotes)
 
-	subs, err := m.DB.GetSubscribers()
-	if err != nil {
-		log.Println("error getting subscribers: ", err)
+		subs, err := m.DB.GetSubscribers()
+		if err != nil {
+			log.Println("error getting subscribers: ", err)
+		}
+		nrSub := len(subs)
+		lastSub := subs[len(subs)-1]
+		intMap := map[string]int{
+			"nrQuotes": nrQuotes,
+			"nrSubs":   nrSub,
+		}
+		stringMap := map[string]string{
+			"email": lastSub.Email,
+		}
+		render.RenderTemplate(w, r, "admin.page.tmpl", &models.Data{
+			Quote:     models.DQ.Quote,
+			Author:    models.DQ.Author,
+			IntMap:    intMap,
+			StringMap: stringMap,
+		})
 	}
-	nrSub := len(subs)
-	lastSub := subs[len(subs)-1]
-	intMap := map[string]int{
-		"nrQuotes": nrQuotes,
-		"nrSubs":   nrSub,
-	}
-	stringMap := map[string]string{
-		"email": lastSub.Email,
-	}
-	render.RenderTemplate(w, r, "admin.page.tmpl", &models.Data{
-		Quote:     models.DQ.Quote,
-		Author:    models.DQ.Author,
-		IntMap:    intMap,
-		StringMap: stringMap,
-	})
 }
 
 // handler for admin page /quotes
 func (m *Repository) AdminQuotes(w http.ResponseWriter, r *http.Request) {
-	quotes, err := m.DB.GetQuotes()
-	if err != nil {
-		log.Println("Could not get quotes from database: ", err)
+	ok := m.App.Session.Exists(r.Context(), "user_id")
+	if !ok {
+		m.App.Session.Put(r.Context(), "error", "log in first")
+		http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
+	} else {
+
+		quotes, err := m.DB.GetQuotes()
+		if err != nil {
+			log.Println("Could not get quotes from database: ", err)
+		}
+		render.RenderTemplate(w, r, "admin-quotes.page.tmpl", &models.Data{
+			Quotes: quotes,
+		})
 	}
-	render.RenderTemplate(w, r, "admin-quotes.page.tmpl", &models.Data{
-		Quotes: quotes,
-	})
 }
 
 func (m *Repository) AdminAddQuote(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, r, "admin-quote-add.page.tmpl", &models.Data{})
+	ok := m.App.Session.Exists(r.Context(), "user_id")
+	if !ok {
+		m.App.Session.Put(r.Context(), "error", "log in first")
+		http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
+	} else {
+		render.RenderTemplate(w, r, "admin-quote-add.page.tmpl", &models.Data{})
+	}
 }
 
 func (m *Repository) AdminAddQuotePost(w http.ResponseWriter, r *http.Request) {
-	quote := r.FormValue("quote")
-	author := r.FormValue("author")
-	fmt.Println(quote)
-	err := m.DB.AddQuote(quote, author)
-	if err != nil {
-		log.Println("error adding quote:", err)
+	ok := m.App.Session.Exists(r.Context(), "user_id")
+	if !ok {
+		m.App.Session.Put(r.Context(), "error", "log in first")
+		http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
+	} else {
+		quote := r.FormValue("quote")
+		author := r.FormValue("author")
+		fmt.Println(quote)
+		err := m.DB.AddQuote(quote, author)
+		if err != nil {
+			log.Println("error adding quote:", err)
+		}
+		render.RenderTemplate(w, r, "admin-quote-add.page.tmpl", &models.Data{})
 	}
-
-	render.RenderTemplate(w, r, "admin-quote-add.page.tmpl", &models.Data{})
-
 }
 
 // handler for admin page /subscribers
 func (m *Repository) Subscribers(w http.ResponseWriter, r *http.Request) {
-	subs, err := m.DB.GetSubscribers()
-	if err != nil {
-		fmt.Println("error getting subscribers: ", err)
-	}
+	ok := m.App.Session.Exists(r.Context(), "user_id")
+	if !ok {
+		m.App.Session.Put(r.Context(), "error", "log in first")
+		http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
+	} else {
+		subs, err := m.DB.GetSubscribers()
+		if err != nil {
+			fmt.Println("error getting subscribers: ", err)
+		}
 
-	render.RenderTemplate(w, r, "admin-subscribers.page.tmpl", &models.Data{
-		Subscribers: subs,
-	})
+		render.RenderTemplate(w, r, "admin-subscribers.page.tmpl", &models.Data{
+			Subscribers: subs,
+		})
+	}
 }

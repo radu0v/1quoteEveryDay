@@ -26,3 +26,7 @@ func failureFunc() http.Handler {
 		http.Error(w, http.StatusText(nosurf.FailureCode), nosurf.FailureCode)
 	})
 }
+
+func SessionLoad(next http.Handler) http.Handler {
+	return sessionManager.LoadAndSave(next)
+}
