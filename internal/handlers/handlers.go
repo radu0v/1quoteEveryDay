@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/radu0v/1quoteEveryDay/internal/config"
 	"github.com/radu0v/1quoteEveryDay/internal/driver"
@@ -105,6 +106,21 @@ func (m *Repository) UnsubscribePost(w http.ResponseWriter, r *http.Request) {
 		}
 		unsubscribed = true
 		//send email to confirm that user is no longer subscribed
+		msg := gomail.NewMessage()
+		msg.SetHeader("From", "")
+		msg.SetHeader("To", email)
+
+		msg.SetHeader("Subject", "1 quote every day: Subscription")
+		content := fmt.Sprintln("Hey! You are now unsubscribed.")
+		msg.SetBody("text/plain", content)
+
+		d := gomail.NewDialer("smtp.", 587, "", "")
+
+		// Send the email
+		if err := d.DialAndSend(msg); err != nil {
+			panic(err)
+		}
+
 		render.RenderTemplate(w, r, "unsubscribe.page.tmpl", &models.Data{
 			Bool: unsubscribed,
 		})
@@ -221,6 +237,31 @@ func (m *Repository) AdminQuotes(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
 	} else {
 
+		quotes, err := m.DB.GetQuotes()
+		if err != nil {
+			log.Println("Could not get quotes from database: ", err)
+		}
+		render.RenderTemplate(w, r, "admin-quotes.page.tmpl", &models.Data{
+			Quotes: quotes,
+		})
+	}
+}
+
+func (m *Repository) DeleteQuote(w http.ResponseWriter, r *http.Request) {
+	ok := m.App.Session.Exists(r.Context(), "user_id")
+	if !ok {
+		m.App.Session.Put(r.Context(), "error", "log in first")
+		http.Redirect(w, r, "/admin/login", http.StatusSeeOther)
+	} else {
+		quoteID := r.FormValue("quoteID")
+		id, err := strconv.Atoi(quoteID)
+		if err != nil {
+			log.Println("error converting string to int after submitting id of quote to delete: ", err)
+		}
+		err = m.DB.DeleteQuote(id)
+		if err != nil {
+			log.Println("could not delete quote:", err)
+		}
 		quotes, err := m.DB.GetQuotes()
 		if err != nil {
 			log.Println("Could not get quotes from database: ", err)

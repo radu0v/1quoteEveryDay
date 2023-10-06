@@ -11,4 +11,5 @@ type DataBaseRepo interface {
 	GetSubscribers() ([]models.EmailData, error)
 	Unsubscribe(email string) error
 	Authenticate(user string, pass string) error
+	DeleteQuote(id int) error
 }

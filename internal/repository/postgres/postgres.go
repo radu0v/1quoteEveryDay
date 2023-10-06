@@ -37,6 +37,18 @@ func (m *postgresDB) AddQuote(quote string, author string) error {
 	return nil
 }
 
+func (m *postgresDB) DeleteQuote(id int) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `delete from quotes where id=$1`
+	_, err := m.DB.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (m *postgresDB) GetQuotes() ([]models.Quote, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()

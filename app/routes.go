@@ -28,6 +28,7 @@ func routes() http.Handler {
 	return mux
 }
 
+// admin router function that defines the admin routing
 func adminRouter() http.Handler {
 	r := chi.NewRouter()
 	r.Use(NoSurf)
@@ -37,6 +38,7 @@ func adminRouter() http.Handler {
 	r.Get("/login", handlers.Repo.Login)
 	r.Post("/login", handlers.Repo.PostLogin)
 	r.Get("/quotes", handlers.Repo.AdminQuotes)
+	r.Post("/quotes", handlers.Repo.DeleteQuote)
 	r.Get("/subscribers", handlers.Repo.Subscribers)
 	r.Get("/quotes/add", handlers.Repo.AdminAddQuote)
 	r.Post("/quotes/add", handlers.Repo.AdminAddQuotePost)
