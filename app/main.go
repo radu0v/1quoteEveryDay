@@ -10,6 +10,7 @@ import (
 	"github.com/radu0v/1quoteEveryDay/internal/config"
 	"github.com/radu0v/1quoteEveryDay/internal/driver"
 	"github.com/radu0v/1quoteEveryDay/internal/handlers"
+	"github.com/radu0v/1quoteEveryDay/internal/render"
 	"github.com/robfig/cron/v3"
 )
 
@@ -38,10 +39,10 @@ func main() {
 	var dbPort = "5432"
 	//fmt.Scan(&dbPort)
 	//fmt.Println("Database name:")
-	var dbName = ""
+	var dbName = "1quote"
 	//fmt.Scan(&dbName)
 	//fmt.Println("Database user:")
-	var dbUser = ""
+	var dbUser = "radu"
 	//fmt.Scan(&dbUser)
 	//fmt.Println("Database password:")
 	var dbPassword = ""
@@ -55,8 +56,15 @@ func main() {
 	defer db.SQL.Close()
 	log.Println("Connected!")
 
+	tc, err := render.CreateTemplateCache()
+	if err != nil {
+		log.Fatal("Cannot create template cache: ", err)
+	}
+	app.TemplateCache = tc
+	app.UseCache = true
 	repo := handlers.NewRepo(db, &app)
 	handlers.NewHandlers(repo)
+	render.NewRenderer(&app)
 
 	// cronjob for sending a quote everyday
 	c := cron.New()
